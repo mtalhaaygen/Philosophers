@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:45:09 by maygen            #+#    #+#             */
-/*   Updated: 2023/06/20 14:33:08 by maygen           ###   ########.fr       */
+/*   Updated: 2023/06/22 12:53:01 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 		return (1);
 	if (arg_check(argc, argv))
 		return (2);
-	// struct init
+	str_init();
 	// mutex start
 	// thread start
 	return (0);

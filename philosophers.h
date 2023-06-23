@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:04:47 by maygen            #+#    #+#             */
-/*   Updated: 2023/06/20 14:56:09 by maygen           ###   ########.fr       */
+/*   Updated: 2023/06/22 12:56:42 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct time_data
 	t_philo *philosophers;
 	pthread_mutex_t *forks;
 	int all_death;
-} t_data;
+} ti_data;
 
 int ft_isdigit(char a);
 int arg_check(int gc, char **gv);

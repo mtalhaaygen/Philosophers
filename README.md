@@ -16,13 +16,12 @@ burda filozoflar threadleri temsil ediyor, çatallar ise kaynakları
 - Bir filozofun öldüğünü bildiren bir mesaj, filozofun gerçek ölümünden en fazla 10 ms sonra gösterilmelidir.
 
 - program çalışırken alacağı argümanlar şu şekilde olacak;
-```
-number_of_philosophers filozof sayısı ve fork sayısı
-time_to_die (milisaniye) açlığa dayanma süresi, bu süre boyunca aç kalan filozof ölür
-time_to_eat (milisaniye) yemek yeme süresi, bu süre boyunca filozoflar iki çatal tutacak
-time_to_sleep (milisaniye) uyku süresi
-number_of_times_each_philosopher_must_eat (opsiyonel) filozofun kaç kere yemek yiyeceği, belirtilmemişse filzoflar ölene kadar program devam eder.
-```
+
+`number_of_philosophers - argv[1]` filozof sayısı ve fork sayısı
+`time_to_die - argv[2]` (milisaniye) açlığa dayanma süresi, bu süre boyunca aç kalan filozof ölür
+`time_to_eat - argv[3]` (milisaniye) yemek yeme süresi, bu süre boyunca filozoflar iki çatal tutacak
+`time_to_sleep - argv[4]` (milisaniye) uyku süresi
+`number_of_times_each_philosopher_must_eat - argv[5]` (opsiyonel) filozofun kaç kere yemek yiyeceği, belirtilmemişse filzoflar ölene kadar program devam eder.
 
 - her filozofun bir sayısı olmalı 1'den number_of_philosophers e kadar. 
 - filozoflar masaya numaralarına göre sırasıyla oturur
@@ -43,14 +42,57 @@ gerçekleştirdiği süre
 
 ### Kavramlar
 
-Data races : Bir thread bir değişkene yada değiştirilebilir bir nesneye erişirken aynı anda başka bir thread ona yazmaya çalışır. Bu durumda kod beklenmeyen çıktılar verebilir.
+her proses birkaç kısımdan oluşur, threadler görselde görüldüğü gibi code data files kısımlarını paylaşır
+- text: This is where the code of the process reside. This is a read-only section.
+- data: This is where global and static initialized variables are stored.
+- rodata: This is where constant variables are stored.
+- bss: This is where global and static un-initialized variables are stored.
+- stack: This is where the local variables and function calls are stored.
+- heap: This is where user allocated memory is stored. When the user uses malloc,
+calloc, new etc.
+
+![g](denemeler/threads.png)
+
+There are several ways to access a thread in a multithreaded program, including:
+1. Joining a thread: You can wait for a thread to finish by calling pthread_join , which
+blocks the calling thread until the specified thread terminates.
+8 - philosophers 7
+2. Detaching a thread: You can detach a thread using pthread_detach , which means
+that its resources will be automatically freed when it terminates, and it cannot be
+joined.
+3. Terminating a thread: You can terminate a thread by calling pthread_exit , which
+allows the thread to exit and return a value to the caller.
+4. Cancelling a thread: You can cancel a thread by calling pthread_cancel , which
+terminates the thread immediately.
+5. Setting thread attributes: You can set various attributes of a thread, such as its
+stack size or scheduling policy, by using pthread_attr_init ,
+pthread_attr_setstacksize , and other related functions.
+6. Synchronizing threads: You can synchronize the execution of threads using
+synchronization mechanisms such as mutexes, semaphores, or condition
+variables.
+7. Sending signals to a thread: You can send signals to a thread using the
+pthread_kill function, which can be used to send any signal to a specified thread.
+These are some of the most common ways to access a thread in a multithreaded
+program, but the exact methods available may depend on the implementation of the
+POSIX threads library.
+
+Data races : Bir thread bir değişkene yada değiştirilebilir bir nesneye erişirken aynı anda başka bir thread ona yazmaya çalışır. Bu durumda kod beklenmeyen çıktılar verebilir. Data Race diyebilmek için erişimlerden en az birinin yazma amaçlı olması gerekir.
+Data races den kaçınmak için mutexler, semaforlar, spinlocklar, ??... kullanılabilir
 - Race Condition kavramı Data Race kavramından farklıdır
 ![g](denemeler/Data%20Races%20vs%20Race%20Condition.png).
 Race Condition : Olayların zamanlaması veya sırası bir kod parçasının doğruluğunu etkilediğinde Race Condition durumu oluşur.
+
+Bir değişkenin değerini arttırmak üç adımdan oluşuyor.
+1 - değişkenin değeri cpu daki bir register a yüklenir
+2 - register'ın değeri 1 arttırılır
+3 - bu değer registerdan değişkene atılır
+
  aynı veri üzerinde işlem yapan iki farklı thread düşünelim, ikiside int olan bu değişkeni arttırıyor olsun. Her bir thread veriyi okur, arttırır, belleğe yazar. İşte böyle bir durumda threadler veriyi aynanda okursa arttırma işlemini ikiside yapar, ve değer bir kere arttırılmış olur. Eğer senkron bir şekilde arttırsalardı iki kere arttırılmış olacaktı
 Race Condition durumu yalnızca multi core işlemcilerde meydana gelir. Single core bir işlemcide bu durumla karşılaşmanız çok olası değildir. Lakin günümüz işlemcilerinin çoğu multicore :D
+
 - Mutexler ile data races i önleyeceğiz. Senkron bir şekilde paylaşılan veriye erişeceğiz. Bir başka deyişle çatallar senkron bir şekilde kullanılacak
-// Mutex : 
+// Mutex : Mutex’ler uygulamanın yazıldığı dil ve Runtime tarafından sağlanan basit veri yapılarıdır. Farklı Thread’ler tarafından paylaşılan her bir kaynak için kaynağa olan erişimi düzenlemek üzere bir Mutex yaratılır. Paylaşılan kaynağa erişim yapılan kod bölgesi `Critical Section` olarak adlandırılır. Kaynakla işi olan Thread, Mutex'in sahipliğini almaya (Acquire) çalışır. Mutex o anda başka bir Thread tarafından tutulmuyorsa Thread Mutex'i alır, Critical Section'a girerek ilgili kaynağı kullanır. Diğer durumda, yani Mutex o anda başka bir Thread tarafından kullanılıyor ise, ikinci Thread işlemci tarafından beklemeye alınır. Mutex'i tutan Thread Critical Section'ı bitirip Mutex'i bırakırken, halihazırda Mutex'in bırakılmasını bekleyen Thread uyandırılır ve Mutex'in sahipliğini alarak Critical Section'a girer ve paylaşılan kaynağa erişim sağlar.
+
 - Deadlock : iki yada daha fazla işlemin (process - thread) devam etmek için birbirlerini beklemesi ve sonuçta devam edememesidir. Örnek olarak her filozofun bir çatalı eline alması ve hiçbirinin yiyememesi durumudur.
 Oluşması için Coffman şartları gereklidir (mutual exclusion, hold and wait, no preemption, circular wait)
 ![g](denemeler/deadlock.png)
@@ -58,6 +100,14 @@ Oluşması için Coffman şartları gereklidir (mutual exclusion, hold and wait,
 ### Threads vs Processes
 ikisi birbirine benziyor ama karıştırmayalım. Bir process birden falza thread içerebilir. Sistem kaynakları processdeki tüm threadlar arasında paylaşılır. Yanii threads oluşturulduğunda processdeki datalar ne ise tüm threadler bunları kullanır ama fork yaptığımızda oluşan iki farklı process için tüm datalar dublicate edilir. Her bir process için her bir data farklı adreste tutulur.
 
+Biz bir thread oluşturduğumuzda main threadin yanında bir thread daha oluşmuş olur, toplamda iki threadimiz olmuş olur iki thread oluşturursak toplam 3 threadimiz olur
+`eğer main thread sonlanırsa diğer tüm threadler de sonlanır` 
+threadler sadece prosesler altında var olabilirler. proseslerin aksine threadler birbirleriyle ilintili çalışırlar ve aynı bellek kaynağını
+paylaşırlar.
+
+ekstra bilgi Amdahl Law
+Bu yasa ile multiprocessor ortamlarda bir işin ne kadarını paralelleştirirseniz, işin ne kadar hızlanacağını hesaplayabilirsiniz. İşlemci sayısı bir noktadan sonra ne kadar artarsa artsın speedup neredeyse değişmiyor
+![g](denemeler/Alaw.png)
 // -Wall bir dizi warning etkinleştirilir, ama tümü değil
 // -Wextra ekstra warningler etkinleştirilir
 // -Werror warningleri error a dönüştürür
@@ -66,19 +116,33 @@ ikisi birbirine benziyor ama karıştırmayalım. Bir process birden falza threa
 
 ### Kullanılacak fonksiyonlar
 
- // Biz bir thread oluşturduğumuzda main threadin yanında bir thread daha oluşmuş olur, toplamda iki threadimiz olmuş olur
-// iki thread oluşturursak toplam 3 threadimiz olur
-
 //pthread_t abstract type is implemented as an integer (long unsigned nt) (4 byte or 8 byte) thread ID
 
-pthread_create() ile thread çalışmaya başlar
+
+Bir thread pthread_create() işlevinin başarılı dönüşü ile başlar
 pthread_join() ile thread çalışmayı bitirir, ikinci parametreye verdiğimiz değişkene
 threadin fonksiyonunun return ettiği void* tipindeki değer atanır. Örneğin
 ```C
- int* a;
- pthread_create..
- pthread_join(&th, &a);
+void *worker_thread(void *arg)
+{
+    int *my_data = (int*)arg; /* data received by thread */
+    printf("This is worker_thread\n");
+    return (arg);
+}
+
+int main()
+{
+    pthread_t th; // thread id
+    pthread_attr_t attr; // thread in attribute larının olduğu değişken
+    int* rv; // return value
+    int t[1] = {11};  // data passed to the new thread
+    pthread_attr_init(&attr); // attributler initialize ediliyor
+    pthread_create(&th, &attr, &worker_thread, (void*)t);
+    pthread_join(th, (void **)&rv);
+    return (0);
+}
 ```
+
 bir döngü ile birsürü thread oluşturursak
 pthread_create() pthread_join() fonksiyonlarını aynı döngünün içinde kullandığımızda mutex ile bu durumu kontrol altına aldığımızda dadad da dahada da biri başlar biri biter sıra ile çalışır biterler
 ancak biz kaynaklar çakışmıyor ise aynı anda çalışan threadler istiyoruz
@@ -91,12 +155,12 @@ ancak biz kaynaklar çakışmıyor ise aynı anda çalışan threadler istiyoruz
 // pthread_mutex_unlock(); kilidi açıp 
 // pthread_mutex_destroy(&my_mutex); mutexi kaldırıyoruz ayrılan belleği kaldırmak içn 
 
-### Garson çözümü
+### Algoritma
+#### Garson çözümü
 
 Garson, sürekli olarak masada boş duran ve filozoflar tarafından yemek için kullanılan çatalların sayılarını takip etmektedir. Bir şekilde her filozof, masadan çatal alabilmek için garsonun iznini istemek zorundadır. Şayet garson izin vermezse filozof masadan çatal alamaz. Bu çözümde filozofların kıtlık problemi (starvation) ile karşılaşmaları engellenir çünkü mantıklı bir garson tasarımı, bütün filozoflara yemek imkanı tanır. Aynı zamanda ölümcül kilitlenme (deadlock) ihtimali de çözülmüştür çünkü garson hiçbir filozofu sonsuza kadar bekletmez. Yani filozofların birbirini bekleyerek sonsuza kadar yaşlanması sorunu çözülmüştür.
 
 Çözümün daha iyi anlaşılabilmesi için, garsonun, saat yönünde masada döndüğünü, düşünelim. O anda işaretlediği filozof yemek yiyor, sonraki yemiyor sonraki yiyor ve böylece kaç filozof farsa, sırayla bir yiyor bir yemiyor şeklinde düşünülebilir. Bu durumda her filozofun yemek yemek için yeterli çatalı (veya sopası) bulunuyor demektir. Sonra garson, sırasıyla bir yönde (örneğin saat yönünde) dönerek masayı dolaşmakta ve sıradaki filozofa yemek yedirmekte (ve dolayısıyla sıradaki filozoftan sonraki yememekte ve sonraki yemekte ve böylece bütün masadakiler bir yer bir yemez şeklinde işaretlenmektedir).
-### Algoritma
 int wait_index = 1;
 
 wihle  wait_index++;
@@ -113,3 +177,28 @@ X ler beklemeyi temsil ediyor
 | Y  | X  | Y  | X  | X  | Y  | X  |
 
 yeme komutu filozofun rFork ve lFork u mutex_lock yapması anlamına geliyor, yeme süresi bitince unlock yapılacak diğer tura geçilecek
+
+
+https://www.mustafayemural.com/cpp-my000047/
+
+
+***
+##### ***TAMAMLANANLAR***
+1- argüman sayısı kontrolü 
+2- argüman check
+3- struct yapılarını oluştur
+- t_philo
+- ti_data
+***
+4- ti_data yı doldur.
+        all_death = 0; 1 olduğunda tüm philolar freelenecek ve program sonlandırılacak
+5- philo number sayısı kadar 
+        t_philo oluştur
+            philo_id 1 den başlayacak (0 yok)
+            ti_data t_philoları tutuyor yapılabilirse t_philolarda ti_datayı tutsun 
+            tüm threadler aynı fonksiyonu çalıştıracak lakin philo_id ye göre işlem yapacak
+        pthread_mutex_t *forks değişkeni ile her fork için mutex oluşturuyoruz 
+            ve bu mutexlerin adreslerini philoların rFork ve lFork mutexlerine atansın (birinin leftFork u diğerinin rightFork u olacak)
+6- Kafam çok karıştı kod inceleee :D
+7- gettimeofday ile milisaniye cinsinden Unix timestamp tan itibaren geçen toplam süreyi hesaplayan get_time fonksiyonu yaz. İlk anda bu süreyi al sonrasında başlangıçtan itibaren ne kadar zaman geçtiğini ilk aldığın değerden çıkartarak bulacaksın
+8- oluşturulan threadlerin yani phliloların hepsi aynı fonksiyonu çalıştıracak, 

@@ -1,52 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#include <stdio.h>
-#include <sys/time.h>
-#include <stdlib.h>
 
-int data = 0;
-pthread_mutex_t my_mutex;
+int primes[10] = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
 
-void* funck(void *arg)
-{
-	for (size_t i = 0; i < 100000; i++)
-	{
-		pthread_mutex_lock(&my_mutex);
-		data++;
-		pthread_mutex_unlock(&my_mutex);
-	}
-}
-void* funck2(void *arg)
-{
-	sleep(3);
-	for (size_t i = 0; i < 100000; i++)
-	{
-		pthread_mutex_lock(&my_mutex);
-		data++;
-		pthread_mutex_unlock(&my_mutex);
-	}
+void* routine(void* arg) {
+    sleep(1);
+    int index = *(int*)arg;
+    printf("%d ", primes[index]);
+    free(arg);
 }
 
-int main()
-{
-	pthread_t *th;
-	int e, i;
-
-	i = 0;
-	pthread_mutex_init(&my_mutex, NULL);
-	while (i < 2)
-	{
-		e = pthread_create(th + i, NULL, &funck2, NULL);
-		if (e != 0)
-			printf("error");
-		printf("thread %d. created\n", i);
-		i++;
-	}  
-	pthread_join(th[1],NULL);
-	printf("thread 1 join\n");
-	// pthread_join(th[0],NULL);
-	// printf("thread 0 join\n");
-	printf("data = %d\n",data);
-	pthread_mutex_destroy(&my_mutex);
-	return (0);
-}
+int main(int argc, char* argv[]) {
+    pthread_t th[10];
+    int i;
+    for (i = 0; i < 10; i++) {
+        int* a = malloc(sizeof(int));
+        *a = i;
+        if (pthread_create(&th[i], NULL, &routine, a) != 0) {
+            perror("Failed to created thread");
+        }
+    }
+	// fork();// burdan itibaren iki farklı process var
+	
+    for (i = 0; i < 10; i++) {
+        if (pthread_join(th[i], NULL) != 0) {
+            perror("Failed to join thread");
+        }
+    }
+    
+    return 0;
+} 
