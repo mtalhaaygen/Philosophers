@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:27 by maygen            #+#    #+#             */
-/*   Updated: 2023/06/23 18:10:38 by maygen           ###   ########.fr       */
+/*   Updated: 2023/06/23 18:27:18 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ void start(ti_data data)
 	i = 0;
 	while (i < data.number_of_philosophers)
 	{
-		data.philos->number_of_philosophers = data.number_of_philosophers;
-		data.philos->philo_id = i + 1;
-		data.philos->rFork = data.forks[i];
-		data.philos->lFork = data.forks[(i+1) % data.number_of_philosophers];
+		data.philos[i].number_of_philosophers = data.number_of_philosophers;
+		data.philos[i].philo_id = i + 1;
+		data.philos[i].rFork = data.forks[i];
+		data.philos[i].lFork =data.forks[(i+1) % data.number_of_philosophers];
 		t = malloc(sizeof(int *));
-		t = &data.philos->philo_id;
-		pthread_create(&data.philos->philo_thread, NULL, &worker_thread, (void *)t);
+		t[0] = data.philos->philo_id;
+		pthread_create(&data.philos[i].philo_thread, NULL, &worker_thread, (void *)t);
 		i++;
 		free(t);
 	}
