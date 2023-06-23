@@ -187,18 +187,24 @@ https://www.mustafayemural.com/cpp-my000047/
 1- argüman sayısı kontrolü 
 2- argüman check
 3- struct yapılarını oluştur
-- t_philo
-- ti_data
-***
+    - t_philo
+    - ti_data
 4- ti_data yı doldur.
         all_death = 0; 1 olduğunda tüm philolar freelenecek ve program sonlandırılacak
 5- philo number sayısı kadar 
         t_philo oluştur
             philo_id 1 den başlayacak (0 yok)
-            ti_data t_philoları tutuyor yapılabilirse t_philolarda ti_datayı tutsun 
             tüm threadler aynı fonksiyonu çalıştıracak lakin philo_id ye göre işlem yapacak
         pthread_mutex_t *forks değişkeni ile her fork için mutex oluşturuyoruz 
             ve bu mutexlerin adreslerini philoların rFork ve lFork mutexlerine atansın (birinin leftFork u diğerinin rightFork u olacak)
-6- Kafam çok karıştı kod inceleee :D
-7- gettimeofday ile milisaniye cinsinden Unix timestamp tan itibaren geçen toplam süreyi hesaplayan get_time fonksiyonu yaz. İlk anda bu süreyi al sonrasında başlangıçtan itibaren ne kadar zaman geçtiğini ilk aldığın değerden çıkartarak bulacaksın
-8- oluşturulan threadlerin yani phliloların hepsi aynı fonksiyonu çalıştıracak, 
+***
+philo(53336,0x11521fdc0) malloc: *** error for object 0x7fb4d6405854: pointer being freed was not allocated
+philo(53336,0x11521fdc0) malloc: *** set a breakpoint in malloc_error_break to debug
+zsh: abort      ./philo 5 1 2 3
+
+6- gettimeofday ile milisaniye cinsinden Unix timestamp tan itibaren geçen toplam süreyi hesaplayan get_time fonksiyonu yaz. İlk anda bu süreyi al sonrasında başlangıçtan itibaren ne kadar zaman geçtiğini ilk aldığın değerden çıkartarak bulacaksın
+7- oluşturulan threadlerin yani phliloların hepsi aynı fonksiyonu çalıştıracak dedik, bu fonksiyon philo_id yi parametre olarak alacak
+çift sayıda philo varsa çiftler yesin diğerleri beklesin
+tek sayıda philo varsa flag sıraya sokacak
+
+
