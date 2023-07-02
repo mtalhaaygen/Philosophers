@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:04:47 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/02 22:02:36 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/02 23:24:41 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct philosopher_data
 	int number_of_philosophers;
 	int philo_id;
 	int ate_times;
+	time_t last_ate;
 	pthread_t philo_thread;
 	struct time_data *data;
 	pthread_mutex_t *rFork;
@@ -44,6 +45,7 @@ typedef struct time_data
 	t_philo *philos;
 	pthread_mutex_t *forks;
 	pthread_mutex_t writing;
+	pthread_mutex_t death;
 } ti_data;
 
 int		ft_isdigit(char a);
@@ -59,6 +61,5 @@ void	exit_threads(ti_data *data);
 void	print_status(char *msg, t_philo *p);
 void	philo_eating(t_philo *p);
 void	philo_sleeping(t_philo *p);
-// death_check
-
+void	check_death(t_philo *philo);
 #endif

@@ -6,7 +6,7 @@ void print_status(char *msg, t_philo *p)
 
 	pthread_mutex_lock(&p->data->writing);
 	timestamp = get_time() - p->data->start_time;
-	printf("%lu %d %s\n", timestamp, p->philo_id, msg);
+	printf("%ld %d %s\n", timestamp, p->philo_id, msg);
 	pthread_mutex_unlock(&p->data->writing);
 }
 
@@ -17,6 +17,7 @@ void philo_eating(t_philo *p)
 	pthread_mutex_lock(p->lFork);
 	print_status("has taken a fork",p);
 	print_status("is eating", p);
+	p->last_ate = get_time();
 	ft_sleep(p->data->time_to_eat, p->data);
 	pthread_mutex_unlock(p->rFork);
 	pthread_mutex_unlock(p->lFork);
