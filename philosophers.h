@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:04:47 by maygen            #+#    #+#             */
-/*   Updated: 2023/06/23 17:54:38 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/02 22:02:36 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,21 @@
 # include <sys/time.h>
 # include <stdlib.h>
 
+struct time_data;
 typedef struct philosopher_data
 {
 	int number_of_philosophers;
 	int philo_id;
+	int ate_times;
 	pthread_t philo_thread;
-	pthread_mutex_t rFork;
-	pthread_mutex_t lFork;
+	struct time_data *data;
+	pthread_mutex_t *rFork;
+	pthread_mutex_t *lFork;
 } t_philo;
 
 typedef struct time_data
 {
+	int all_death;
 	int number_of_philosophers;
 	time_t start_time;
 	time_t time_to_die;
@@ -39,14 +43,22 @@ typedef struct time_data
 	int number_of_times_each_philosopher_must_eat;
 	t_philo *philos;
 	pthread_mutex_t *forks;
-	int all_death;
+	pthread_mutex_t writing;
 } ti_data;
 
-int ft_isdigit(char a);
-int arg_check(int gc, char **gv);
-int	ft_atoi(const char *str);
-ti_data s_init(char **srgv);
-void start(ti_data data);
-time_t get_time();
-#endif
+int		ft_isdigit(char a);
+int		arg_check(int gc, char **gv);
+int		ft_atoi(const char *str);
+time_t	get_time();
 
+int		start_init(ti_data *data, char **argv);
+int		philo_init(ti_data *data);
+int		start_simulation(ti_data *data);
+void	ft_sleep(time_t duration, ti_data *data);
+void	exit_threads(ti_data *data);
+void	print_status(char *msg, t_philo *p);
+void	philo_eating(t_philo *p);
+void	philo_sleeping(t_philo *p);
+// death_check
+
+#endif

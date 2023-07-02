@@ -1,8 +1,8 @@
 NAME = philo
-SRCS = philosophers.c source.c check.c main.c
+SRCS = philosophers.c source.c check.c main.c threadfunc.c
 OBJ = $(SRCS:.c=.o)
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror #-g -lpthread
+CFLAGS = -Wall -Wextra -Werror -g -lpthread
 RM = rm -rf
 
 all: $(NAME)
