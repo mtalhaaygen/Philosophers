@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:27 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/02 22:09:45 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/02 22:21:27 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int	start_simulation(ti_data *data)
 		}
 		i++;
 	}
+	// check_deat döngüsü
 	exit_threads(data);
 	return (0);
 }
