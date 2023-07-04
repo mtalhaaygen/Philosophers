@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:21 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/02 23:55:02 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/03 14:50:07 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,4 @@ void	exit_threads(ti_data *data)
 	pthread_mutex_destroy(&data->death);
 	free(data->philos);
 	free(data->forks);
-}
-
-void	check_death(t_philo *philo)
-{
-	usleep(9999999);
-	philo->data->all_death = 1;
-	// problem : bu değişkeni burada değiştiremiyoruz
 }
