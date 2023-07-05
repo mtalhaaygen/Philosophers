@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:59:05 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/04 17:33:16 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/05 14:21:44 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	check_death(t_data *data)
 		if (status || finish_serving(data))
 		{
 			if (status)
-				printf("%lu %d %s\n", time, data->philos[i].philo_id, "died");
+				print_status("died", &data->philos[i]);
 			data->all_death = 1;
 			break ;
 		}
