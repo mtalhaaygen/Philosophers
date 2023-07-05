@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:27 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/04 16:09:43 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/05 17:42:51 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*worker_thread(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->philo_id % 2 == 1 && philo->data->number_of_philosophers > 1)
-		ft_sleep(philo->data->time_to_eat / 50, philo->data);
+		ft_sleep(philo->data->time_to_eat / 30, philo->data);
 	while (!philo->data->all_death)
 	{
 		if (!philo->data->all_death)
@@ -59,7 +59,8 @@ int	philo_init(t_data *data)
 
 	i = -1;
 	data->all_death = 0;
-	if (pthread_mutex_init(&data->writing, NULL))
+	if (pthread_mutex_init(&data->writing, NULL) || \
+					pthread_mutex_init(&data->death, NULL))
 		return (1);
 	while (++i < data->number_of_philosophers)
 	{

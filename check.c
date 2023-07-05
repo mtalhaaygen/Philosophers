@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:59:05 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/05 14:21:44 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/05 17:54:29 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	finish_serving(t_data *data)
 		i = 0;
 		while (i < data->number_of_philosophers)
 		{
-			if (data->number_of_times_each_philosopher_must_eat == \
+			if (data->number_of_times_each_philosopher_must_eat <= \
 			data->philos[i].ate_times)
 				count++;
 			i++;
@@ -71,16 +71,18 @@ void	check_death(t_data *data)
 	time_t	time;
 
 	i = -1;
+	pthread_mutex_lock(&data->death);
 	while (++i < data->number_of_philosophers)
 	{
 		time = get_time() - data->philos[i].last_ate;
 		status = time >= data->time_to_die;
 		if (status || finish_serving(data))
 		{
-			if (status)
-				print_status("died", &data->philos[i]);
 			data->all_death = 1;
+			if (status)
+				printf("%lu %d %s\n", time, data->philos[i].philo_id, "died");
 			break ;
 		}
 	}
+	pthread_mutex_unlock(&data->death);
 }

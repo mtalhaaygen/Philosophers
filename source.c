@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:21 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/05 14:32:09 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/05 17:31:01 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	exit_threads(t_data *data)
 	while (++i < data->number_of_philosophers)
 		pthread_mutex_destroy(&data->forks[i]);
 	pthread_mutex_destroy(&data->writing);
-	// pthread_mutex_destroy(&data->death);
+	pthread_mutex_destroy(&data->death);
 	free(data->philos);
 	free(data->forks);
 }
