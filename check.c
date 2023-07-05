@@ -6,28 +6,29 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:59:05 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/04 13:02:11 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/04 17:33:16 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int ft_isdigit(char a)
+int	ft_isdigit(char a)
 {
 	if (a >= 48 && a <= 57)
-		return 1;
+		return (1);
 	return (0);
 }
 
-int arg_check(int gc, char **gv)
+int	arg_check(int gc, char **gv)
 {
-	int i, j;
+	int	i;
+	int	j;
 
 	i = 1;
 	while (i < gc)
 	{
 		j = 0;
-		while(gv[i][j])
+		while (gv[i][j])
 		{
 			if (!ft_isdigit(gv[i][j]))
 				return (1);
@@ -38,11 +39,10 @@ int arg_check(int gc, char **gv)
 	return (0);
 }
 
-int	finish_serving(ti_data *data)
+int	finish_serving(t_data *data)
 {
-	// tüm filozofların ate_times değerleri numsafdsgfhdgjhghgfgdhgjhhgfg 'a eşit olunca return 1 yapacak
-	int count;
-	int i;
+	int	count;
+	int	i;
 
 	count = 0;
 	if (data->number_of_times_each_philosopher_must_eat != -1)
@@ -50,11 +50,11 @@ int	finish_serving(ti_data *data)
 		i = 0;
 		while (i < data->number_of_philosophers)
 		{
-			if (data->number_of_times_each_philosopher_must_eat == data->philos[i].ate_times)
+			if (data->number_of_times_each_philosopher_must_eat == \
+			data->philos[i].ate_times)
 				count++;
 			i++;
 		}
-		// printf("count:%d",count);
 		if (count == data->number_of_philosophers)
 		{
 			data->all_death = 1;
@@ -64,13 +64,11 @@ int	finish_serving(ti_data *data)
 	return (0);
 }
 
-void	check_death(ti_data *data)
+void	check_death(t_data *data)
 {
-	// iki koşul var
-	// 2 - max eat e ulaştı mı ?
-	int i;
-	int status;
-	time_t time;
+	int		i;
+	int		status;
+	time_t	time;
 
 	i = -1;
 	while (++i < data->number_of_philosophers)
@@ -82,7 +80,7 @@ void	check_death(ti_data *data)
 			if (status)
 				printf("%lu %d %s\n", time, data->philos[i].philo_id, "died");
 			data->all_death = 1;
-			break; 
+			break ;
 		}
 	}
 }

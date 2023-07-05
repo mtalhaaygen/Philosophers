@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:21 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/03 14:50:07 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/04 13:43:09 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,30 @@ int	ft_atoi(const char *str)
 	return (res);
 }
 
-time_t get_time()
+time_t	get_time(void)
 {
-	struct timeval tv;
-	time_t start_time;
+	struct timeval	tv;
+	time_t			start_time;
 
 	gettimeofday(&tv, NULL);
-	start_time = ((long int)tv.tv_sec * 1000) + (tv.tv_usec / 1000); 
+	start_time = ((long int)tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	return (start_time);
 }
 
-void	ft_sleep(time_t duration, ti_data *data)
+void	ft_sleep(time_t duration, t_data *data)
 {
-	time_t	start; 
+	time_t	start;
 
-	start = get_time(); // fonksiyonun başladığı zamanı alıyor
-	while (!data->all_death) // eğer bir filozof olursa condition değişkeni 1 olur ve döngü sonlanır
+	start = get_time();
+	while (!data->all_death)
 	{
-		if (get_time() - start >= duration) // şuanki zamandan fonksiyonun başladığı zamanı çıkartarak geçen zaman duration a eşit olunca döngüyü sonlandıracak
+		if (get_time() - start >= duration)
 			break ;
-		usleep(data->number_of_philosophers * 2); // buna neden ihtiyaç oldu anlamadım
+		usleep(data->number_of_philosophers * 2);
 	}
 }
 
-void	exit_threads(ti_data *data)
+void	exit_threads(t_data *data)
 {
 	int	i;
 
@@ -80,7 +80,6 @@ void	exit_threads(ti_data *data)
 	while (++i < data->number_of_philosophers)
 		pthread_mutex_destroy(&data->forks[i]);
 	pthread_mutex_destroy(&data->writing);
-	pthread_mutex_destroy(&data->death);
 	free(data->philos);
 	free(data->forks);
 }

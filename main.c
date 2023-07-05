@@ -6,21 +6,21 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:45:09 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/03 14:12:45 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/04 13:40:07 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	ti_data data;
+	t_data	data;
 
 	if (argc != 5 && argc != 6)
 		return (1);
 	if (arg_check(argc, argv))
 		return (1);
-	if (start_init(&data ,argv))
+	if (start_init(&data, argv))
 		return (1);
 	if (philo_init(&data))
 		return (1);
