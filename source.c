@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:21 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/07 11:29:10 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/07 16:20:28 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void	exit_threads(t_data *data)
 		pthread_detach(data->philos[0].philo_thread);
 	else
 	{
-		i = -1;
-		while (++i < data->number_of_philosophers)
-			pthread_join(data->philos[i].philo_thread, NULL);
+	i = -1;
+	while (++i < data->number_of_philosophers)
+		pthread_join(data->philos[i].philo_thread, NULL);
 	}
 	i = -1;
 	while (++i < data->number_of_philosophers)

@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:04:47 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/07 11:28:43 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/07 16:17:00 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,5 @@ void	print_status(char *msg, t_philo *p);
 void	philo_eating(t_philo *p);
 void	philo_sleeping(t_philo *p);
 void	check_death(t_data *data);
+int		is_alldeath(t_data *data);
 #endif

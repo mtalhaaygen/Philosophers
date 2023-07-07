@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:27 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/07 11:29:03 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/07 17:20:23 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,16 @@ void	*worker_thread(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->philo_id % 2 == 1 && philo->data->number_of_philosophers > 1)
-		ft_sleep(philo->data->time_to_eat / 30, philo->data);
-	while (!philo->data->all_death)
+		ft_sleep(philo->data->time_to_eat / 40, philo->data);
+	while (1)
 	{
-		if (!philo->data->all_death)
+		if (!is_alldeath(philo->data))
 			philo_eating(philo);
-		if (!philo->data->all_death)
+		if (!is_alldeath(philo->data))
 			philo_sleeping(philo);
-		if (!philo->data->all_death)
-			print_status("thinking", philo);
+		if (is_alldeath(philo->data))
+			break ;
+		print_status("thinking", philo);
 	}
 	return (NULL);
 }
@@ -86,24 +87,21 @@ int	start_simulation(t_data *data)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	data->start_time = get_time();
-	while (i < data->number_of_philosophers)
-	{
+	while (++i < data->number_of_philosophers)
 		data->philos[i].last_ate = data->start_time;
+	i = -1;
+	while (++i < data->number_of_philosophers)
+	{
 		if (pthread_create(&data->philos[i].philo_thread, NULL, \
 								&worker_thread, &(data->philos[i])))
-		{
 			return (1);
-		}
-		i++;
 	}
 	while (1)
 	{
-		pthread_mutex_lock(&data->death);
-		if (data->all_death)
+		if (is_alldeath(data))
 			break ;
-		pthread_mutex_unlock(&data->death);
 		check_death(data);
 	}
 	exit_threads(data);
