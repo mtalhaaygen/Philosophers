@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:21 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/05 17:31:01 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/07 11:29:10 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_sleep(time_t duration, t_data *data)
 	time_t	start;
 
 	start = get_time();
-	while (!data->all_death)
+	while (1)
 	{
 		if (get_time() - start >= duration)
 			break ;
@@ -81,6 +81,7 @@ void	exit_threads(t_data *data)
 		pthread_mutex_destroy(&data->forks[i]);
 	pthread_mutex_destroy(&data->writing);
 	pthread_mutex_destroy(&data->death);
+	pthread_mutex_destroy(&data->meal);
 	free(data->philos);
 	free(data->forks);
 }

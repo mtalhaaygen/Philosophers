@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 12:43:20 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/05 17:34:31 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/07 11:35:03 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ void	philo_eating(t_philo *p)
 	pthread_mutex_lock(p->l_fork);
 	print_status("has taken a fork", p);
 	print_status("is eating", p);
+	pthread_mutex_lock(&p->data->meal);
 	p->last_ate = get_time();
 	p->ate_times++;
+	pthread_mutex_unlock(&p->data->meal);
 	ft_sleep(p->data->time_to_eat, p->data);
 	pthread_mutex_unlock(p->r_fork);
 	pthread_mutex_unlock(p->l_fork);

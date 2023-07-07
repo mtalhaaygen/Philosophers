@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:27 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/05 17:42:51 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/07 11:29:03 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	philo_init(t_data *data)
 	i = -1;
 	data->all_death = 0;
 	if (pthread_mutex_init(&data->writing, NULL) || \
-					pthread_mutex_init(&data->death, NULL))
+					pthread_mutex_init(&data->death, NULL) || \
+					pthread_mutex_init(&data->meal, NULL))
 		return (1);
 	while (++i < data->number_of_philosophers)
 	{
@@ -97,8 +98,14 @@ int	start_simulation(t_data *data)
 		}
 		i++;
 	}
-	while (!data->all_death)
+	while (1)
+	{
+		pthread_mutex_lock(&data->death);
+		if (data->all_death)
+			break ;
+		pthread_mutex_unlock(&data->death);
 		check_death(data);
+	}
 	exit_threads(data);
 	return (0);
 }

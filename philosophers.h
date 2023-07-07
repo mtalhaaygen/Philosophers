@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:04:47 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/05 17:31:06 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/07 11:28:43 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_time_data
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	writing;
 	pthread_mutex_t	death;
+	pthread_mutex_t	meal;
 }	t_data;
 
 int		ft_isdigit(char a);
