@@ -6,7 +6,7 @@
 /*   By: maygen <maygen@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:44:27 by maygen            #+#    #+#             */
-/*   Updated: 2023/07/07 17:20:23 by maygen           ###   ########.fr       */
+/*   Updated: 2023/07/09 18:10:46 by maygen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*worker_thread(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->philo_id % 2 == 1 && philo->data->number_of_philosophers > 1)
-		ft_sleep(philo->data->time_to_eat / 40, philo->data);
+		ft_sleep(philo->data->time_to_eat, philo->data);
 	while (1)
 	{
 		if (!is_alldeath(philo->data))
