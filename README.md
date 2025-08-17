@@ -31,8 +31,7 @@ burda filozoflar threadleri temsil ediyor, çatallar ise kaynakları
 ```
  durum değişiklikleri aşağıdaki gibi çıktı verilecek
 timestamp_in_ms X has taken a fork
-timestamp_in_ms X is![An_illustration_of_the_dining_philosophers_problem](https://github.com/mtalhaaygen/Philosophers/assets/63591196/3261f57d-7c55-43f0-a682-47df9a183d96)
- eating
+timestamp_in_ms X is eating
 timestamp_in_ms X is sleeping
 timestamp_in_ms X is thinking
 timestamp_in_ms X died
